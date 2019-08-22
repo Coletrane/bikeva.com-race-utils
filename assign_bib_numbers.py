@@ -6,5 +6,4 @@ out_filepath = filepath.replace(".csv", "-with-bib-numbers.csv")
 
 registrants = pd.read_csv(filepath)
 registrants['Bib'] = range(1, 1 + len(registrants))
-registrants.to_csv(out_filepath)
-
+registrants.to_csv(out_filepath, index=False)
