@@ -20,4 +20,4 @@ bikereg_df = pd.read_csv(bikereg_path, header=0)
 bikereg_df.dropna(how='all', axis='columns', inplace=True)
 
 with_times_df = bikereg_df.merge(webscorer_df, how='left', on='Bib')
-
+with_times_df.to_csv(out_filepath)
