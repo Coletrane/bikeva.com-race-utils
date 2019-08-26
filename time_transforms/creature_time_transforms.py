@@ -1,5 +1,7 @@
 import sys
+
 import pandas as pd
+
 from time_transforms import time_tansform_utils as utils
 
 xc_categories = [
@@ -22,7 +24,10 @@ xc_time_diff_secs = float(60 * 60 * xc_time_diff_hrs)
 results_path = sys.argv[1]
 
 results_df = pd.read_csv(results_path, delimiter='\t', header=0)
-results_df = utils.add_hours_digit(results_df, 'Time')
+results_df = utils.add_hours_digit(
+    results_df,
+    'Time'
+)
 for index, row in results_df['Time'].iterrows():
     hrs, mins, secs = row.split(':')
     hrs_and_mins_secs = utils.hrs_and_mins_to_secs(int(hrs), int(mins))
@@ -30,4 +35,7 @@ for index, row in results_df['Time'].iterrows():
     adjusted_secs = total_row_secs + xc_time_diff_secs
     row = str(adjusted_secs)
 
-results_df.to_csv(results_path, index=False)
+results_df.to_csv(
+    results_path,
+    index=False
+)

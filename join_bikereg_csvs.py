@@ -21,7 +21,9 @@ joined_df.drop(
     inplace=True
 )
 joined_df.rename(
-    columns={'Bib_x': 'Bib'},
+    columns={
+        'Bib_x': 'Bib'
+    },
     inplace=True
 )
 joined_df['Bib'] = joined_df['Bib'].astype('Int32')
