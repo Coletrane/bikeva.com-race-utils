@@ -3,14 +3,14 @@ import sys
 
 import pandas as pd
 
-pre_reg_with_bib_numbers_filepath = sys.argv[1]
-with_walk_up_filepath = sys.argv[2]
-out_filepath = os.path.dirname(pre_reg_with_bib_numbers_filepath) + '/' + \
-               os.path.basename(pre_reg_with_bib_numbers_filepath).split("-")[0] + \
+pre_reg_with_bib_numbers_path = sys.argv[1]
+with_walk_up_path = sys.argv[2]
+out_filepath = os.path.dirname(pre_reg_with_bib_numbers_path) + '/' + \
+               os.path.basename(pre_reg_with_bib_numbers_path) + \
                '-all-reg.csv'
 
-pre_reg_df = pd.read_csv(pre_reg_with_bib_numbers_filepath)
-walk_up_df = pd.read_csv(with_walk_up_filepath)
+pre_reg_df = pd.read_csv(pre_reg_with_bib_numbers_path)
+walk_up_df = pd.read_csv(with_walk_up_path)
 joined_df = pd.merge(
     pre_reg_df, walk_up_df,
     on=['First Name', 'Last Name', 'Category Entered/Merchandise Ordered'],

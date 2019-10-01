@@ -28,7 +28,7 @@ results_df = utils.add_hours_digit(
     results_df,
     'Time'
 )
-for index, row in results_df['Time'].iterrows():
+for row in results_df['Time'].iterrows():
     hrs, mins, secs = row.split(':')
     hrs_and_mins_secs = utils.hrs_and_mins_to_secs(int(hrs), int(mins))
     total_row_secs = float(hrs_and_mins_secs) + float(secs)
