@@ -2,7 +2,12 @@ import sys
 
 import pandas as pd
 
-from time_transforms import time_tansform_utils as utils
+from utils import time_tansform_utils as ttf_util
+
+category_prefixes = [
+    'Marathon/XXC'
+    'XC'
+]
 
 xc_categories = [
     'XC Beginner Men Cat 3',
@@ -24,13 +29,13 @@ xc_time_diff_secs = float(60 * 60 * xc_time_diff_hrs)
 results_path = sys.argv[1]
 
 results_df = pd.read_csv(results_path, delimiter='\t', header=0)
-results_df = utils.add_hours_digit(
+results_df = ttf_util.add_hours_digit(
     results_df,
     'Time'
 )
 for row in results_df['Time'].iterrows():
     hrs, mins, secs = row.split(':')
-    hrs_and_mins_secs = utils.hrs_and_mins_to_secs(int(hrs), int(mins))
+    hrs_and_mins_secs = ttf_util.hrs_and_mins_to_secs(int(hrs), int(mins))
     total_row_secs = float(hrs_and_mins_secs) + float(secs)
     adjusted_secs = total_row_secs + xc_time_diff_secs
     row = str(adjusted_secs)

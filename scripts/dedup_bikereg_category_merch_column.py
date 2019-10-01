@@ -3,19 +3,21 @@ import sys
 
 import pandas as pd
 
+from utils import bikereg_utils as breg_utils
+
 bikereg_results_path = sys.argv[1]
 total_racers = int(sys.argv[2])
 no_merch_path = os.path.splitext(bikereg_results_path)[0] + \
                 '-no-merch.csv'
-cat_and_merch = 'Category Entered / Merchandise Ordered'
 
 bikereg_results_df = pd.read_csv(bikereg_results_path)
 
 
 def is_not_merch(row):
-    cat = row[cat_and_merch]
+    cat = row[breg_utils.CAT_AND_MERCH]
     is_merch = cat.startswith('T shirt') or \
-               cat.startswith('Trail Maintenance Donations Welcomed')
+               cat.startswith('Trail Maintenance Donations Welcomed') or \
+               cat.startswith('License')
     return not is_merch
 
 
@@ -37,7 +39,7 @@ except AssertionError as ass_err:
     raise
 
 no_merch_df = no_merch_df.rename(columns={
-    cat_and_merch: 'Category Entered'
+    breg_utils.CAT_AND_MERCH: 'Category Entered'
 })
 
 no_merch_df.to_csv(
