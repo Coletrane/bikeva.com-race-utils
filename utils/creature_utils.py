@@ -1,15 +1,14 @@
-import sys
-
 import pandas as pd
 
 from utils import time_tansform_utils as ttf_util
+from utils import bikereg_utils as breg_utils
 
-category_prefixes = [
-    'Marathon/XXC'
+MARATHON_XXC = 'Marathon/XXC'
+CATEGORIES = [
+    MARATHON_XXC,
     'XC'
 ]
-
-xc_categories = [
+XC_CATEGORIES = [
     'XC Beginner Men Cat 3',
     'XC Beginner Women Cat 3',
     'XC Sport Men Cat 2 19+',
@@ -23,24 +22,30 @@ xc_categories = [
     'XC Master Men 45+ Cat 2/3',
     'XC Master Women 35+ Cat 2/3'
 ]
-xc_time_diff_hrs = 3
-xc_time_diff_secs = float(60 * 60 * xc_time_diff_hrs)
+XC_TIME_DIFF = 3
+XC_TIME_DIFF_SECS = float(60 * 60 * XC_TIME_DIFF)
 
-results_path = sys.argv[1]
+def race_discipline(row):
+    cat = row[breg_utils.CATEGORY_ENTERED]
+    if cat.startswith(MARATHON_XXC):
+        return breg_utils.DISCIPLINES['xcm']
+    elif cat.startswith('XC'):
+        return breg_utils.DISCIPLINES['xc']
 
-results_df = pd.read_csv(results_path, delimiter='\t', header=0)
-results_df = ttf_util.add_hours_digit(
-    results_df,
-    'Time'
-)
-for row in results_df['Time'].iterrows():
-    hrs, mins, secs = row.split(':')
-    hrs_and_mins_secs = ttf_util.hrs_and_mins_to_secs(int(hrs), int(mins))
-    total_row_secs = float(hrs_and_mins_secs) + float(secs)
-    adjusted_secs = total_row_secs + xc_time_diff_secs
-    row = str(adjusted_secs)
+def time_transform(results_path):
+    results_df = pd.read_csv(results_path, delimiter='\t', header=0)
+    results_df = ttf_util.add_hours_digit(
+        results_df,
+        'Time'
+    )
+    for row in results_df['Time'].iterrows():
+        hrs, mins, secs = row.split(':')
+        hrs_and_mins_secs = ttf_util.hrs_and_mins_to_secs(int(hrs), int(mins))
+        total_row_secs = float(hrs_and_mins_secs) + float(secs)
+        adjusted_secs = total_row_secs + XC_TIME_DIFF_SECS
+        row = str(adjusted_secs)
 
-results_df.to_csv(
-    results_path,
-    index=False
-)
+    results_df.to_csv(
+        results_path,
+        index=False
+    )
