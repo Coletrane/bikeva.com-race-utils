@@ -4,10 +4,14 @@ from utils import time_tansform_utils as ttf_util
 from utils import bikereg_utils as breg_utils
 
 MARATHON_XXC = 'Marathon/XXC'
-CATEGORIES = [
+XC = 'XC'
+ENDURO = 'enduro'
+
+XC_DISCIPLINES = [
     MARATHON_XXC,
-    'XC'
+    XC
 ]
+
 XC_CATEGORIES = [
     'XC Beginner Men Cat 3',
     'XC Beginner Women Cat 3',
@@ -22,6 +26,32 @@ XC_CATEGORIES = [
     'XC Master Men 45+ Cat 2/3',
     'XC Master Women 35+ Cat 2/3'
 ]
+
+DISCIPLINE_AGE_GROUPS = {
+    MARATHON_XXC: [
+        '45+',
+        '55+'
+    ],
+    XC: [
+        '19+',
+        '1-6th Grade',
+        '7-10th Grade',
+        '11-12th Grade',
+        '35+',
+        '45+',
+        '55+'
+    ],
+    ENDURO: [
+        '19-99',
+        '9-14',
+        '15-18',
+        '9-99',
+        '50-99',
+        '19-21',
+        '40-49'
+    ]
+}
+
 XC_TIME_DIFF = 3
 XC_TIME_DIFF_SECS = float(60 * 60 * XC_TIME_DIFF)
 

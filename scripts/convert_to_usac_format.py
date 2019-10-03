@@ -7,8 +7,7 @@ from utils import bikereg_utils as breg_utils
 from utils import creature_utils as creature
 
 final_results_path = sys.argv[1]
-usac_results_path = os.path.dirname(final_results_path) + '/' + \
-                    os.path.basename(final_results_path) + \
+usac_results_path = os.path.splitext(final_results_path)[0] +\
                     '-usac-format.csv'
 
 final_results_df = pd.read_csv(final_results_path)
@@ -24,11 +23,14 @@ usac_results_df = pd.DataFrame({
         final_results_df.apply(breg_utils.get_category_gender, axis='columns'),
     'Race Class':
         final_results_df.apply(
-            lambda row: breg_utils.get_race_class(row, creature.CATEGORIES),
+            lambda row: breg_utils.get_race_class(row, creature.XC_DISCIPLINES),
             axis='columns'
         ),
     'Race Age Group':
-        [],
+        final_results_df.apply(
+            lambda row: breg_utils.get_race_age_group(row, creature.DISCIPLINE_AGE_GROUPS),
+            axis='columns'
+        ),
     'Rider License #':
         final_results_df['USAC License'],
     'Rider First Name':
@@ -36,5 +38,10 @@ usac_results_df = pd.DataFrame({
     'Rider Last Name':
         final_results_df['Last Name'],
     'Rider Place':
-        final_results_df['Position']
+        [None] * len(final_results_df.index)
 })
+
+usac_results_df.to_csv(
+    usac_results_path,
+    index=False
+)

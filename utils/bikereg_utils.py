@@ -1,6 +1,7 @@
 CATEGORY_ENTERED = 'Category Entered'
 CAT_AND_MERCH = 'Category Entered / Merchandise Ordered'
 GENDER = 'Gender'
+AGE_ON_EVENT_DAY = 'Age on Event Day'
 DISCIPLINES = {
     'xc': 'XC',
     'xcm': 'XCM',
@@ -47,13 +48,13 @@ def get_race_cat(row):
         raise
 
 
-def get_race_class(row, categories):
+def get_race_class(row, disciplines):
     cat = row[CATEGORY_ENTERED]
     clazz = None
-    for category in categories:
+    for category in disciplines:
         if clazz is not None:
             break
-        if f"{category} " in cat:
+        if get_race_discipline(row, disciplines) is not None:
             clazz = cat \
                 .replace(category, '') \
                 .replace(f"Cat {get_race_cat(row)}", '')
@@ -67,3 +68,28 @@ def get_race_class(row, categories):
             cat
         )
         raise
+
+
+def get_race_discipline(row, disciplines):
+    cat = row[CATEGORY_ENTERED]
+    for discipline in disciplines:
+        if f"{discipline} " in cat:
+            return discipline
+
+
+def get_race_age_group(row, discipline_age_groups):
+    cat = row[CATEGORY_ENTERED]
+    discipline = get_race_discipline(row, list(discipline_age_groups.keys()))
+    age_groups = discipline_age_groups[discipline]
+    found_age_group = None
+    for age_group in age_groups:
+        if found_age_group is not None:
+            break
+        if age_group in cat:
+            found_age_group = age_group
+
+    # may need to use row[AGE_ON_EVENT_DAY] here to discern age group?
+    if found_age_group is None:
+        found_age_group = 'Open'
+
+    return found_age_group
