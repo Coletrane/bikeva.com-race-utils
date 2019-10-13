@@ -13,11 +13,21 @@ def no_merch_path(filepath):
 def dedup_bikreg_category_merch_column(bikereg_results_path, total_racers):
     bikereg_results_df = pd.read_csv(bikereg_results_path)
 
+    MERCH_PREFIXES = [
+        'T shirt',
+        'Trail Maintenance Donations Welcomed',
+        'License',
+        'Ultraclub Tech T'
+    ]
+
     def is_not_merch(row):
         cat = row[breg_utils.CAT_AND_MERCH]
-        is_merch = cat.startswith('T shirt') or \
-                   cat.startswith('Trail Maintenance Donations Welcomed') or \
-                   cat.startswith('License')
+        is_merch = False
+        for prefix in MERCH_PREFIXES:
+            if is_merch:
+                break
+            is_merch = cat.startswith(prefix)
+
         return not is_merch
 
     no_merch_df = bikereg_results_df.apply(
