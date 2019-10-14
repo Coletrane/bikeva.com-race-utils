@@ -5,9 +5,18 @@ import pandas as pd
 from utils import bikereg_utils as breg_utils
 
 
+def out_dir(filepath):
+    return os.path.dirname(filepath) \
+               .replace('/in', '') \
+               .replace('/out', '') + \
+           '/out/' + \
+           os.path.splitext(
+               os.path.basename(filepath)
+           )[0]
+
+
 def no_merch_path(filepath):
-    return os.path.splitext(filepath)[0] + \
-           '-no-merch.csv'
+    return out_dir(filepath) + '-no-merch.csv'
 
 
 def dedup_bikreg_category_merch_column(bikereg_results_path, total_racers):
@@ -58,7 +67,7 @@ def dedup_bikreg_category_merch_column(bikereg_results_path, total_racers):
 
 
 def bib_numbers_path(filepath):
-    return filepath.replace(".csv", "-with-bib-numbers.csv")
+    return out_dir(filepath) + '-with-bib-numbers.csv'
 
 
 def assign_bib_numbers(filepath):
@@ -71,9 +80,7 @@ def assign_bib_numbers(filepath):
 
 
 def bikereg_join_path(filepath):
-    return os.path.dirname(filepath) + '/' + \
-           os.path.basename(filepath) + \
-           '-all-reg.csv'
+    return out_dir(filepath) + '-all-reg.csv'
 
 
 def join_bikereg_csvs(pre_reg_bib_nums_path, walk_up_path):
@@ -103,7 +110,7 @@ def join_bikereg_csvs(pre_reg_bib_nums_path, walk_up_path):
 
 
 def webscorer_bikereg_join_path(filepath):
-    return filepath.replace(".csv", "with-times.csv")
+    return out_dir(filepath) + 'with-times.csv'
 
 
 def join_webscorer_and_bikereg(webscorer_path, bikereg_path):
