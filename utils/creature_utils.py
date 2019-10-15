@@ -1,6 +1,3 @@
-import pandas as pd
-
-from utils import time_tansform_utils as ttf_util
 from utils import bikereg_utils as breg_utils
 
 MARATHON_XXC = 'Marathon/XXC'
@@ -52,8 +49,12 @@ DISCIPLINE_AGE_GROUPS = {
     ]
 }
 
-XC_TIME_DIFF = 3
-XC_TIME_DIFF_SECS = float(60 * 60 * XC_TIME_DIFF)
+# Since both races are running off of one clock, and the XC might not start EXACTLY at the
+# time it is scheduled, I mark the time they start with an out of bounds bib number
+XC_START_MARKER_BIB_NUMBERS = [
+    66666
+]
+
 
 def race_discipline(row):
     cat = row[breg_utils.CATEGORY_ENTERED]
@@ -61,21 +62,3 @@ def race_discipline(row):
         return breg_utils.DISCIPLINES['xcm']
     elif cat.startswith('XC'):
         return breg_utils.DISCIPLINES['xc']
-
-def time_transform(results_path):
-    results_df = pd.read_csv(results_path, delimiter='\t', header=0)
-    results_df = ttf_util.add_hours_digit(
-        results_df,
-        'Time'
-    )
-    for row in results_df['Time'].iterrows():
-        hrs, mins, secs = row.split(':')
-        hrs_and_mins_secs = ttf_util.hrs_and_mins_to_secs(int(hrs), int(mins))
-        total_row_secs = float(hrs_and_mins_secs) + float(secs)
-        adjusted_secs = total_row_secs + XC_TIME_DIFF_SECS
-        row = str(adjusted_secs)
-
-    results_df.to_csv(
-        results_path,
-        index=False
-    )

@@ -70,11 +70,14 @@ def bib_numbers_path(filepath):
     return out_dir(filepath) + '-with-bib-numbers.csv'
 
 
-def assign_bib_numbers(filepath):
-    registrants = pd.read_csv(filepath)
-    registrants['Bib'] = range(1, 1 + len(registrants))
+def assign_bib_numbers(bikereg_path, sequence_start):
+    registrants = pd.read_csv(bikereg_path)
+    registrants['Bib'] = range(
+        sequence_start,
+        sequence_start + len(registrants)
+    )
     registrants.to_csv(
-        bib_numbers_path(filepath),
+        bib_numbers_path(bikereg_path),
         index=False
     )
 
@@ -154,5 +157,55 @@ def join_webscorer_and_bikereg(webscorer_path, bikereg_path):
     )
     with_times_df.to_csv(
         webscorer_bikereg_join_path(bikereg_path),
+        index=False
+    )
+
+
+def add_hours_digit(dataframe, rowname):
+    """
+     Convert times to HH:MM:SS.S format with 0
+    :param dataframe: dataframe to operate on
+    :param rowname: name of the row with times
+    :return the new dataframe
+    """
+    for row in dataframe[rowname].itterows():
+        times = row.split(':')
+        if len(times) == 2:
+            row = f'0:{row}'
+
+    return dataframe
+
+
+def row_time_to_secs(row):
+    hrs, mins, secs = row['Time'].split(':')
+
+    hrs_secs = hrs * 60 * 60
+    mins_secs = mins * 60
+
+    return float(hrs_secs + mins_secs + secs)
+
+
+def time_transform_path(filepath):
+    return out_dir(filepath) + 'time-adjusted.csv'
+
+
+def time_transform(results_path, staggered_time_marker_bibs):
+    results_df = pd.read_csv(results_path, delimiter='\t', header=0)
+    results_df = add_hours_digit(
+        results_df,
+        'Time'
+    )
+    # TODO: make this look at category for Middle Mountain Momma
+    marker_bib_time = None
+    for row in results_df.iterrows():
+        if row['Bib'] in staggered_time_marker_bibs:
+            marker_bib_time = row_time_to_secs(row)
+
+        if marker_bib_time is not None:
+            row_secs = row_time_to_secs(row)
+            row['Time'] = str(row_secs - marker_bib_time)
+
+    results_df.to_csv(
+        time_transform_path(results_path),
         index=False
     )
