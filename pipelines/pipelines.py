@@ -15,10 +15,6 @@ def out_dir(filepath):
            )[0]
 
 
-def no_merch_path(filepath):
-    return out_dir(filepath) + '-no-merch.csv'
-
-
 def dedup_bikreg_category_merch_column(bikereg_results_path, total_racers):
     bikereg_results_df = pd.read_csv(bikereg_results_path)
 
@@ -57,11 +53,13 @@ def dedup_bikreg_category_merch_column(bikereg_results_path, total_racers):
         raise
 
     no_merch_df = no_merch_df.rename(columns={
-        breg_utils.CAT_AND_MERCH: 'Category Entered'
+        breg_utils.CAT_AND_MERCH: breg_utils.CATEGORY_ENTERED
     })
 
+    # this utility is for results only so we don't want to
+    # preserve the files with merchandise on them
     no_merch_df.to_csv(
-        no_merch_path(bikereg_results_path),
+        out_dir(bikereg_results_path) + '.csv',
         index=False
     )
 
@@ -89,9 +87,11 @@ def bikereg_join_path(filepath):
 def join_bikereg_csvs(pre_reg_bib_nums_path, walk_up_path):
     pre_reg_df = pd.read_csv(pre_reg_bib_nums_path)
     walk_up_df = pd.read_csv(walk_up_path)
-    joined_df = pd.merge(
-        pre_reg_df, walk_up_df,
-        on=['First Name', 'Last Name', 'Category Entered/Merchandise Ordered'],
+    join_cols = list(pre_reg_df.columns.values)
+    join_cols.remove('Bib')
+    joined_df = pre_reg_df.merge(
+        walk_up_df,
+        on=join_cols,
         how='right'
     )
     joined_df.drop(
@@ -105,7 +105,6 @@ def join_bikereg_csvs(pre_reg_bib_nums_path, walk_up_path):
         inplace=True
     )
     joined_df['Bib'] = joined_df['Bib'].astype('Int32')
-
     joined_df.to_csv(
         bikereg_join_path(pre_reg_bib_nums_path),
         index=False
@@ -117,7 +116,7 @@ def webscorer_bikereg_join_path(filepath):
 
 
 def join_webscorer_and_bikereg(webscorer_path, bikereg_path):
-    webscorer_df = pd.read_csv(webscorer_path, delimiter='\t', header=0)
+    webscorer_df = pd.read_csv(webscorer_path, delimiter='\t')
     webscorer_df.drop(
         columns=['Place', 'Name'],
         inplace=True
@@ -140,10 +139,7 @@ def join_webscorer_and_bikereg(webscorer_path, bikereg_path):
         ass_err.args += (num_rows_without_bib, 'rows have no bib numbers!')
         raise
 
-    bikereg_df = pd.read_csv(
-        bikereg_path,
-        header=0
-    )
+    bikereg_df = pd.read_csv(bikereg_path)
     bikereg_df.dropna(
         how='all',
         axis='columns',
@@ -161,19 +157,19 @@ def join_webscorer_and_bikereg(webscorer_path, bikereg_path):
     )
 
 
-def add_hours_digit(dataframe, rowname):
+def add_hours_digit(df):
     """
      Convert times to HH:MM:SS.S format with 0
     :param dataframe: dataframe to operate on
     :param rowname: name of the row with times
     :return the new dataframe
     """
-    for row in dataframe[rowname].itterows():
-        times = row.split(':')
+    for index, row in df.iterrows():
+        times = str(row['Time']).split(':')
         if len(times) == 2:
-            row = f'0:{row}'
+            row['Time'] = f'0:{row}'
 
-    return dataframe
+    return df
 
 
 def row_time_to_secs(row):
@@ -186,18 +182,15 @@ def row_time_to_secs(row):
 
 
 def time_transform_path(filepath):
-    return out_dir(filepath) + 'time-adjusted.csv'
+    return out_dir(filepath) + '-time-adjusted.csv'
 
 
 def time_transform(results_path, staggered_time_marker_bibs):
-    results_df = pd.read_csv(results_path, delimiter='\t', header=0)
-    results_df = add_hours_digit(
-        results_df,
-        'Time'
-    )
+    results_df = pd.read_csv(results_path)
+    results_df = add_hours_digit(results_df)
     # TODO: make this look at category for Middle Mountain Momma
     marker_bib_time = None
-    for row in results_df.iterrows():
+    for idx, row in results_df.iterrows():
         if row['Bib'] in staggered_time_marker_bibs:
             marker_bib_time = row_time_to_secs(row)
 

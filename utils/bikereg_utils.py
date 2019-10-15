@@ -2,6 +2,9 @@ CATEGORY_ENTERED = 'Category Entered'
 CAT_AND_MERCH = 'Category Entered / Merchandise Ordered'
 GENDER = 'Gender'
 AGE_ON_EVENT_DAY = 'Age on Event Day'
+FIRST_NAME = 'First Name'
+LAST_NAME = 'Last Name'
+
 DISCIPLINES = {
     'xc': 'XC',
     'xcm': 'XCM',
