@@ -1,6 +1,7 @@
-import pandas as pd
-import numpy as np
 import datetime
+
+import numpy as np
+import pandas as pd
 
 from pipelines import pipelines
 from utils import bikereg_utils as breg_utils
@@ -57,7 +58,7 @@ DISCIPLINE_AGE_GROUPS = {
 
 # Since both races are running off of one clock, and the XC might not start EXACTLY at the
 # time it is scheduled, I mark the time they start with an out of bounds bib number
-XC_START_MARKER_BIB_NUMBER =  66666
+XC_START_MARKER_BIB_NUMBER = 66666
 
 
 def race_discipline(row):
@@ -89,6 +90,10 @@ def time_transform(results_path):
                 datetime.timedelta(
                     seconds=(row_secs - marker_bib_time)
                 )
+            )
+            results_df.drop(
+                results_df.loc[results_df['Bib'] == XC_START_MARKER_BIB_NUMBER].index,
+                inplace=True
             )
 
     results_df.to_csv(

@@ -112,7 +112,7 @@ def join_bikereg_csvs(pre_reg_bib_nums_path, walk_up_path):
 
 
 def webscorer_bikereg_join_path(filepath):
-    return out_dir(filepath) + 'with-times.csv'
+    return out_dir(filepath) + '-with-times.csv'
 
 
 def join_webscorer_and_bikereg(
