@@ -16,7 +16,7 @@ def out_dir(filepath):
 
 
 def dedup_bikreg_category_merch_column(bikereg_results_path, total_racers):
-    bikereg_results_df = pd.read_csv(bikereg_results_path)
+    bikereg_results_df = pd.read_csv(bikereg_results_path, header=0)
 
     MERCH_PREFIXES = [
         'T shirt',
@@ -69,7 +69,7 @@ def bib_numbers_path(filepath):
 
 
 def assign_bib_numbers(bikereg_path, sequence_start):
-    registrants = pd.read_csv(bikereg_path)
+    registrants = pd.read_csv(bikereg_path, header=0)
     registrants['Bib'] = range(
         sequence_start,
         sequence_start + len(registrants)
@@ -85,8 +85,8 @@ def bikereg_join_path(filepath):
 
 
 def join_bikereg_csvs(pre_reg_bib_nums_path, walk_up_path):
-    pre_reg_df = pd.read_csv(pre_reg_bib_nums_path)
-    walk_up_df = pd.read_csv(walk_up_path)
+    pre_reg_df = pd.read_csv(pre_reg_bib_nums_path, header=0)
+    walk_up_df = pd.read_csv(walk_up_path, header=0)
     join_cols = list(pre_reg_df.columns.values)
     join_cols.remove('Bib')
     joined_df = pre_reg_df.merge(
@@ -115,8 +115,11 @@ def webscorer_bikereg_join_path(filepath):
     return out_dir(filepath) + 'with-times.csv'
 
 
-def join_webscorer_and_bikereg(webscorer_path, bikereg_path):
-    webscorer_df = pd.read_csv(webscorer_path, delimiter='\t')
+def join_webscorer_and_bikereg(
+        webscorer_path,
+        bikereg_path,
+        staggered_time_marker_bibs):
+    webscorer_df = pd.read_csv(webscorer_path, delimiter='\t', header=0)
     webscorer_df.drop(
         columns=['Place', 'Name'],
         inplace=True
@@ -139,12 +142,19 @@ def join_webscorer_and_bikereg(webscorer_path, bikereg_path):
         ass_err.args += (num_rows_without_bib, 'rows have no bib numbers!')
         raise
 
-    bikereg_df = pd.read_csv(bikereg_path)
+    bikereg_df = pd.read_csv(bikereg_path, header=0)
     bikereg_df.dropna(
         how='all',
         axis='columns',
         inplace=True
     )
+    for marker_bib in staggered_time_marker_bibs:
+        bikereg_df = bikereg_df.append(
+            {
+                'Bib': marker_bib
+            },
+            ignore_index=True
+        )
 
     with_times_df = bikereg_df.merge(
         webscorer_df,
@@ -156,49 +166,6 @@ def join_webscorer_and_bikereg(webscorer_path, bikereg_path):
         index=False
     )
 
-
-def add_hours_digit(df):
-    """
-     Convert times to HH:MM:SS.S format with 0
-    :param dataframe: dataframe to operate on
-    :param rowname: name of the row with times
-    :return the new dataframe
-    """
-    for index, row in df.iterrows():
-        times = str(row['Time']).split(':')
-        if len(times) == 2:
-            row['Time'] = f'0:{row}'
-
-    return df
-
-
-def row_time_to_secs(row):
-    hrs, mins, secs = row['Time'].split(':')
-
-    hrs_secs = hrs * 60 * 60
-    mins_secs = mins * 60
-
-    return float(hrs_secs + mins_secs + secs)
-
-
 def time_transform_path(filepath):
     return out_dir(filepath) + '-time-adjusted.csv'
 
-
-def time_transform(results_path, staggered_time_marker_bibs):
-    results_df = pd.read_csv(results_path)
-    results_df = add_hours_digit(results_df)
-    # TODO: make this look at category for Middle Mountain Momma
-    marker_bib_time = None
-    for idx, row in results_df.iterrows():
-        if row['Bib'] in staggered_time_marker_bibs:
-            marker_bib_time = row_time_to_secs(row)
-
-        if marker_bib_time is not None:
-            row_secs = row_time_to_secs(row)
-            row['Time'] = str(row_secs - marker_bib_time)
-
-    results_df.to_csv(
-        time_transform_path(results_path),
-        index=False
-    )

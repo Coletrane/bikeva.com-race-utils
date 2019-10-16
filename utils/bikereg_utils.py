@@ -1,9 +1,5 @@
 CATEGORY_ENTERED = 'Category Entered'
 CAT_AND_MERCH = 'Category Entered / Merchandise Ordered'
-GENDER = 'Gender'
-AGE_ON_EVENT_DAY = 'Age on Event Day'
-FIRST_NAME = 'First Name'
-LAST_NAME = 'Last Name'
 
 DISCIPLINES = {
     'xc': 'XC',
@@ -20,7 +16,7 @@ def get_category_gender(row):
     elif 'Men' in cat:
         cat_gender = 'Men'
     else:
-        gender = row[GENDER]
+        gender = row['Gender']
         if gender == 'X':
             gender = 'Both'
         cat_gender = gender

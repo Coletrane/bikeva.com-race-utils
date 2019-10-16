@@ -29,10 +29,10 @@ if __name__ == "__main__":
     )
     pipelines.join_webscorer_and_bikereg(
         webscorer_path=pre_race.DATA_PATH + '/in/webscorer.txt',
-        bikereg_path=BIKEREG_JOIN_PATH
+        bikereg_path=BIKEREG_JOIN_PATH,
+        staggered_time_marker_bibs=[creature.XC_START_MARKER_BIB_NUMBER]
     )
-    pipelines.time_transform(
-        results_path=WEBSCORER_BIKEREG_JOIN_PATH,
-        staggered_time_marker_bibs=creature.XC_START_MARKER_BIB_NUMBERS
+    creature.time_transform(
+        results_path=WEBSCORER_BIKEREG_JOIN_PATH
     )
     main()
