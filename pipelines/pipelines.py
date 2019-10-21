@@ -1,5 +1,7 @@
 import os
 
+import numpy as np
+
 from utils import bikereg_utils as breg_utils
 from utils import webscorer_utils as webscr_utils
 
@@ -119,7 +121,7 @@ def join_webscorer_and_bikereg(
     )
     no_bib_numbers_df = webscorer_df[
         webscorer_df.apply(
-            lambda df: df['Bib'] == 0,
+            lambda df: df['Bib'] is np.NaN,
             axis=1
         )
     ]

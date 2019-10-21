@@ -2,7 +2,6 @@
 
 from pipelines import pipelines
 from pipelines.creature_2019 import pre_race
-from utils import creature_utils as creature
 
 BIKEREG_WITH_WALKUP_PATH = pre_race.DATA_PATH + '/in/bikereg-with-walk-up.csv'
 TOTAL_RACERS_WITH_WALKUP = 69
@@ -26,13 +25,5 @@ if __name__ == "__main__":
     pipelines.join_bikereg_csvs(
         pre_reg_bib_nums_path=BIB_NUMBERS_PATH,
         walk_up_path=pipelines.out_dir(BIKEREG_WITH_WALKUP_PATH) + '.csv'
-    )
-    pipelines.join_webscorer_and_bikereg(
-        webscorer_path=pre_race.DATA_PATH + '/in/webscorer.txt',
-        bikereg_path=BIKEREG_JOIN_PATH,
-        staggered_time_marker_bibs=[creature.XC_START_MARKER_BIB_NUMBER]
-    )
-    creature.time_transform(
-        results_path=WEBSCORER_BIKEREG_JOIN_PATH
     )
     main()

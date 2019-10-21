@@ -83,7 +83,8 @@ def time_transform(results_path):
     for idx, row in results_df.iterrows():
         if is_xc(row) and \
                 row['Bib'] != XC_START_MARKER_BIB_NUMBER and \
-                row['Time'] is not np.nan:
+                row['Time'] is not np.nan and \
+                row['Time'] != 'DNF':
             row_secs = time_utils.row_time_to_secs(row)
             results_df.loc[idx, 'Time'] = str(
                 datetime.timedelta(
