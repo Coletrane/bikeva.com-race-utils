@@ -1,3 +1,5 @@
+import pandas as pd
+
 CATEGORY_ENTERED = 'Category Entered'
 CAT_AND_MERCH = 'Category Entered / Merchandise Ordered'
 
@@ -6,6 +8,32 @@ DISCIPLINES = {
     'xcm': 'XCM',
     'enduro': 'ED'
 }
+
+
+def read_csv_with_dtypes(filepath):
+    return pd.read_csv(
+        filepath,
+        header=0,
+        dtype={
+            'Bib': pd.Int64Dtype(),
+            'City': str,
+            'First Name': str,
+            'USAC License Status': str,
+            'Last Name': str,
+            'State': str,
+            'Team': str,
+            'USAC License': str,
+            'Age on Event Day': str,
+            'Email': str,
+            'Phone': str,
+            'Category Date': str,
+            CAT_AND_MERCH: str,
+            'Gender': str,
+            'USAC Category DH': str,
+            'USAC Category XC': str,
+            'Quantity': pd.Int64Dtype()
+        }
+    )
 
 
 def get_category_gender(row):

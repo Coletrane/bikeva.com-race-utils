@@ -5,7 +5,7 @@ from pipelines.creature_2019 import pre_race
 from utils import creature_utils as creature
 
 BIKEREG_WITH_WALKUP_PATH = pre_race.DATA_PATH + '/in/bikereg-with-walk-up.csv'
-TOTAL_RACERS_WITH_WALKUP = 33
+TOTAL_RACERS_WITH_WALKUP = 69
 
 BIB_NUMBERS_PATH = pipelines.bib_numbers_path(pre_race.BIKEREG_PATH)
 BIKEREG_JOIN_PATH = pipelines.bikereg_join_path(BIB_NUMBERS_PATH)

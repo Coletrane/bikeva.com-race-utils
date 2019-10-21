@@ -1,8 +1,7 @@
 import os
 
-import pandas as pd
-
 from utils import bikereg_utils as breg_utils
+from utils import webscorer_utils as webscr_utils
 
 
 def out_dir(filepath):
@@ -16,7 +15,7 @@ def out_dir(filepath):
 
 
 def dedup_bikreg_category_merch_column(bikereg_results_path, total_racers):
-    bikereg_results_df = pd.read_csv(bikereg_results_path, header=0)
+    bikereg_results_df = breg_utils.read_csv_with_dtypes(bikereg_results_path)
 
     MERCH_PREFIXES = [
         'T shirt',
@@ -69,7 +68,7 @@ def bib_numbers_path(filepath):
 
 
 def assign_bib_numbers(bikereg_path, sequence_start):
-    registrants = pd.read_csv(bikereg_path, header=0)
+    registrants = breg_utils.read_csv_with_dtypes(bikereg_path)
     registrants['Bib'] = range(
         sequence_start,
         sequence_start + len(registrants)
@@ -85,8 +84,8 @@ def bikereg_join_path(filepath):
 
 
 def join_bikereg_csvs(pre_reg_bib_nums_path, walk_up_path):
-    pre_reg_df = pd.read_csv(pre_reg_bib_nums_path, header=0)
-    walk_up_df = pd.read_csv(walk_up_path, header=0)
+    pre_reg_df = breg_utils.read_csv_with_dtypes(pre_reg_bib_nums_path)
+    walk_up_df = breg_utils.read_csv_with_dtypes(walk_up_path)
     join_cols = list(pre_reg_df.columns.values)
     join_cols.remove('Bib')
     joined_df = pre_reg_df.merge(
@@ -94,17 +93,6 @@ def join_bikereg_csvs(pre_reg_bib_nums_path, walk_up_path):
         on=join_cols,
         how='right'
     )
-    joined_df.drop(
-        columns=['Bib_y'],
-        inplace=True
-    )
-    joined_df.rename(
-        columns={
-            'Bib_x': 'Bib'
-        },
-        inplace=True
-    )
-    joined_df['Bib'] = joined_df['Bib'].astype('Int32')
     joined_df.to_csv(
         bikereg_join_path(pre_reg_bib_nums_path),
         index=False
@@ -119,7 +107,7 @@ def join_webscorer_and_bikereg(
         webscorer_path,
         bikereg_path,
         staggered_time_marker_bibs):
-    webscorer_df = pd.read_csv(webscorer_path, delimiter='\t', header=0)
+    webscorer_df = webscr_utils.read_txt_with_dtypes(webscorer_path)
     webscorer_df.drop(
         columns=['Place', 'Name'],
         inplace=True
@@ -142,30 +130,27 @@ def join_webscorer_and_bikereg(
         ass_err.args += (num_rows_without_bib, 'rows have no bib numbers!')
         raise
 
-    bikereg_df = pd.read_csv(bikereg_path, header=0)
-    bikereg_df.dropna(
-        how='all',
-        axis='columns',
-        inplace=True
-    )
+    bikereg_df = breg_utils.read_csv_with_dtypes(bikereg_path)
+
+    # add marker bibs to bikereg dataframe
     for marker_bib in staggered_time_marker_bibs:
         bikereg_df = bikereg_df.append(
             {
-                'Bib': marker_bib
+                'Bib': str(marker_bib)
             },
             ignore_index=True
         )
 
-    with_times_df = bikereg_df.merge(
-        webscorer_df,
-        how='left',
-        on='Bib'
-    )
-    with_times_df.to_csv(
+    for idx, row in bikereg_df.iterrows():
+        webscorer_row = webscorer_df.loc[webscorer_df['Bib'] == str(row['Bib'])]
+        if not webscorer_row['Time'].empty:
+            bikereg_df.loc[idx, 'Time'] = webscorer_row['Time'].squeeze()
+
+    bikereg_df.to_csv(
         webscorer_bikereg_join_path(bikereg_path),
         index=False
     )
 
+
 def time_transform_path(filepath):
     return out_dir(filepath) + '-time-adjusted.csv'
-

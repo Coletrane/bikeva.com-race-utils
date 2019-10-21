@@ -3,7 +3,7 @@ from pipelines import pipelines
 DATA_PATH = '../../data/creature-2019'
 BIKEREG_PATH = DATA_PATH + '/in/bikereg.csv'
 TOTAl_RACERS = 58
-NUMBER_SEQUENCE_START = 500
+NUMBER_SEQUENCE_START = 501
 NUMBER_SEQUENCE_END = 700
 
 

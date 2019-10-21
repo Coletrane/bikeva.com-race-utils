@@ -1,7 +1,6 @@
 import datetime
 
 import numpy as np
-import pandas as pd
 
 from pipelines import pipelines
 from utils import bikereg_utils as breg_utils
@@ -74,7 +73,7 @@ def is_xc(row):
 
 
 def time_transform(results_path):
-    results_df = pd.read_csv(results_path, header=0)
+    results_df = breg_utils.read_csv_with_dtypes(results_path)
     results_df = time_utils.add_hours_digit(results_df)
 
     marker_bib_time = time_utils.row_time_to_secs(
