@@ -138,15 +138,21 @@ def join_webscorer_and_bikereg(
     for marker_bib in staggered_time_marker_bibs:
         bikereg_df = bikereg_df.append(
             {
-                'Bib': str(marker_bib)
+                'Bib': int(marker_bib)
             },
             ignore_index=True
         )
 
-    for idx, row in bikereg_df.iterrows():
-        webscorer_row = webscorer_df.loc[webscorer_df['Bib'] == str(row['Bib'])]
-        if not webscorer_row['Time'].empty:
-            bikereg_df.loc[idx, 'Time'] = webscorer_row['Time'].squeeze()
+    for idx, row in webscorer_df.iterrows():
+        bikereg_row = bikereg_df.loc[bikereg_df['Bib'] == int(row['Bib'])]
+
+        try:
+            assert not bikereg_row.empty
+        except AssertionError as ass_err:
+            ass_err.args += ('No webscorer row found for bikereg df Bib: ', row['Bib'])
+            raise
+        if row['Time'] is not None:
+            bikereg_df.loc[idx, 'Time'] = row['Time']
 
     bikereg_df.to_csv(
         webscorer_bikereg_join_path(bikereg_path),
