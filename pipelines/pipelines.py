@@ -1,22 +1,36 @@
 import os
-
 import numpy as np
 
 from utils import bikereg_utils as breg_utils
 from utils import webscorer_utils as webscr_utils
+from utils import decorators as decorators
 
 
-def out_dir(filepath):
+def __data_dir(filepath, is_in_dir=True):
+    # gets the input or output directory
+    in_or_out_dir = 'in' if is_in_dir else 'out'
     return os.path.dirname(filepath) \
                .replace('/in', '') \
                .replace('/out', '') + \
-           '/out/' + \
+           '/' + in_or_out_dir + '/' + \
            os.path.splitext(
                os.path.basename(filepath)
            )[0]
 
 
+def in_dir(filepath):
+    # convenience method for getting the input directory
+    return __data_dir(filepath, True)
+
+
+def out_dir(filepath):
+    # convenience method for getting the output directory
+    return __data_dir(filepath, False)
+
+
+@decorators.deprecated("Use the 'All entries for a person on a single row' in BikeReg")
 def dedup_bikreg_category_merch_column(bikereg_results_path, total_racers):
+    #
     bikereg_results_df = breg_utils.read_csv_with_dtypes(bikereg_results_path)
 
     MERCH_PREFIXES = [
