@@ -13,3 +13,15 @@ def read_txt_with_dtypes(filepath):
             'Time': str
         }
     )
+
+
+def read_csv_with_dtypes(filepath):
+    return pd.read_csv(
+        filepath,
+        dtype={
+            'Pl': str,
+            'Bib': str,
+            'Name': str,
+            'Time': str
+        }
+    )

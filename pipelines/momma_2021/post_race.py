@@ -28,18 +28,20 @@ if __name__ == "__main__":
     # )
 
     # pipelines.join_bikereg_csvs(
-    #     pre_reg_bib_nums_path=DATA_PATH + '/out/bikereg-deduped.csv',
+    #     pre_reg_bib_nums_path=DATA_PATH + '/out/bikereg-deduped-with-bib-numbers.csv',
     #     walk_up_path=DATA_PATH + '/out/bikereg-with-walk-up-deduped.csv'
     # )
 
-    pipelines.join_webscorer_and_bikereg(
-        webscorer_path=DATA_PATH + '/in/webscorer.csv',
-        bikereg_path=DATA_PATH + '/out/bikereg-deduped-all-reg.csv',
-        staggered_time_marker_bibs=[race_utils.XC_START_MARKER_BIB_NUMBER]
-    )
-
-    # momma.time_transform(
-    #     results_path=DATA_PATH + '/out/bikereg-deduped-all-reg-with-times.csv'
+    # pipelines.join_webscorer_and_bikereg(
+    #     webscorer_path=DATA_PATH + '/in/webscorer.csv',
+    #     bikereg_path=DATA_PATH + '/out/bikereg-deduped-with-bib-numbers-all-reg.csv',
+    #     staggered_time_marker_bibs=[race_utils.XC_START_MARKER_BIB_NUMBER],
+    #     strict_matching=False
     # )
+
+    momma.time_transform(
+        results_path=DATA_PATH + '/out/bikereg-deduped-with-bib-numbers-all-reg-with-times.csv',
+        output_filename=DATA_PATH + '/out/final-results.csv'
+    )
 
     main()

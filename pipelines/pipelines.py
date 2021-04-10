@@ -108,6 +108,8 @@ def join_bikereg_csvs(pre_reg_bib_nums_path, walk_up_path):
         on=join_cols,
         how='right'
     )
+    joined_df.rename(columns={'Bib_x': 'Bib'}, inplace=True)
+    joined_df.drop(columns='Bib_y', inplace=True)
     joined_df.to_csv(
         bikereg_join_path(pre_reg_bib_nums_path),
         index=False
@@ -121,10 +123,11 @@ def webscorer_bikereg_join_path(filepath):
 def join_webscorer_and_bikereg(
         webscorer_path,
         bikereg_path,
-        staggered_time_marker_bibs):
-    webscorer_df = webscr_utils.read_txt_with_dtypes(webscorer_path)
+        staggered_time_marker_bibs,
+        strict_matching=True):
+    webscorer_df = webscr_utils.read_csv_with_dtypes(webscorer_path)
     webscorer_df.drop(
-        columns=['Place', 'Name'],
+        columns=['Pl', 'Name'],
         inplace=True
     )
     webscorer_df.dropna(
@@ -146,6 +149,7 @@ def join_webscorer_and_bikereg(
         raise
 
     bikereg_df = breg_utils.read_csv_with_dtypes(bikereg_path)
+    bikereg_df['Time'] = np.nan
 
     # add marker bibs to bikereg dataframe
     for marker_bib in staggered_time_marker_bibs:
@@ -156,16 +160,22 @@ def join_webscorer_and_bikereg(
             ignore_index=True
         )
 
-    for idx, row in webscorer_df.iterrows():
-        bikereg_row = bikereg_df.loc[bikereg_df['Bib'] == int(row['Bib'])]
+    for idx, webscorer_row in webscorer_df.iterrows():
+        webscorer_bib_num = int(webscorer_row['Bib'])
+        bikereg_row = bikereg_df.loc[bikereg_df['Bib'] == webscorer_bib_num]
 
         try:
             assert not bikereg_row.empty
         except AssertionError as ass_err:
-            ass_err.args += ('No webscorer row found for bikereg df Bib: ', row['Bib'])
-            raise
-        if row['Time'] is not None:
-            bikereg_df.loc[idx, 'Time'] = row['Time']
+            ass_err.args += ('No webscorer row found for bikereg df Bib: ', webscorer_row['Bib'])
+            if strict_matching:
+                raise
+
+        if bikereg_row.empty:
+            continue
+
+        if webscorer_row['Time'] is not None:
+            bikereg_df.loc[bikereg_df['Bib'] == webscorer_bib_num, 'Time'] = webscorer_row['Time']
 
     bikereg_df.to_csv(
         webscorer_bikereg_join_path(bikereg_path),

@@ -2,19 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bce9a7e2-1df5-410d-87de-8be7904b6c60" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/csv-plugin.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/other.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/momma-2021-test/in/bikereg-with-walk-up.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/momma-2021-test/in/bikereg.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/race_utils_common.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/momma-2021-test/in/MMM 2021 Test.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/momma-2021-test/in/webscorer.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/csv-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-plugin.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bikeva.com-race-utils.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bikeva.com-race-utils.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pipelines/momma_2021/post_race.py" beforeDir="false" afterPath="$PROJECT_DIR$/pipelines/momma_2021/post_race.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/momma_2021/pre_race.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pipelines/pipelines.py" beforeDir="false" afterPath="$PROJECT_DIR$/pipelines/pipelines.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/creature_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/creature_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/middle_mountain_momma_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/momma_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/momma_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/momma_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/race_utils_common.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/race_utils_common.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/webscorer_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/webscorer_utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,7 +132,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="add_unversioned_files" value="$PROJECT_DIR$/data/test-webscorer.txt&#10;/Users/coleinman/Programs/mtbva/bikeva.com-race-utils/data/momma-2021-test/out/bikereg-with-bib-numbers.csv" />
+    <property name="add_unversioned_files" value="$PROJECT_DIR$/data/test-webscorer.txt&#10;/Users/coleinman/Programs/mtbva/bikeva.com-race-utils/data/momma-2021-test/out/bikereg-with-bib-numbers.csv&#10;/Users/coleinman/Programs/mtbva/bikeva.com-race-utils/data/momma-2021-test/out/bikereg-deduped-with-bib-numbers-all-reg.csv&#10;/Users/coleinman/Programs/mtbva/bikeva.com-race-utils/data/momma-2021-test/out/bikereg-deduped-with-bib-numbers-all-reg-with-times.csv" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/data/momma-2019/in" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -163,7 +160,7 @@
       <recent name="$PROJECT_DIR$/data/momma-2019/in/.not-deduped" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.webscorer_txt_join_bikereg_csv_on_bib_column">
+  <component name="RunManager" selected="Python.momma_2021_post_race">
     <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <method v="2">
@@ -374,12 +371,12 @@
       <item itemvalue="Python.webscorer_txt_join_bikereg_csv_on_bib_column" />
       <item itemvalue="Python.creature_time_transforms" />
       <item itemvalue="Python.pre_race" />
-      <item itemvalue="Python.post_race" />
+      <item itemvalue="Python.momma_2021_post_race" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.momma_2021_post_race" />
         <item itemvalue="Python.webscorer_txt_join_bikereg_csv_on_bib_column" />
-        <item itemvalue="Python.post_race" />
         <item itemvalue="Python.pre_race" />
         <item itemvalue="Python.assign_bib_numbers" />
         <item itemvalue="Python.creature_time_transforms" />
@@ -401,7 +398,7 @@
       <workItem from="1567007299128" duration="601000" />
       <workItem from="1567632806837" duration="2318000" />
       <workItem from="1616251962276" duration="4459000" />
-      <workItem from="1618064479261" duration="5405000" />
+      <workItem from="1618064479261" duration="12307000" />
     </task>
     <task id="LOCAL-00001" summary="set up middle mountain momma testing">
       <created>1616257231970</created>
@@ -417,7 +414,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616258773057</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="got momma directories and files setup">
+      <created>1618070059469</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1618070059469</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -466,7 +470,8 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="set up middle mountain momma testing" />
     <MESSAGE value="deprecated dedup reg numbers" />
-    <option name="LAST_COMMIT_MESSAGE" value="deprecated dedup reg numbers" />
+    <MESSAGE value="got momma directories and files setup" />
+    <option name="LAST_COMMIT_MESSAGE" value="got momma directories and files setup" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -484,7 +489,7 @@
     <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/bikeva_com_race_utils$post_race.coverage" NAME="post_race Coverage Results" MODIFIED="1618068595319" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pipelines/momma_2021" />
+    <SUITE FILE_PATH="coverage/bikeva_com_race_utils$post_race.coverage" NAME="post_race Coverage Results" MODIFIED="1618084868351" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pipelines/momma_2021" />
     <SUITE FILE_PATH="coverage/bikeva_com_race_utils$webscorer_txt_join_bikereg_csv_on_bib_column.coverage" NAME="webscorer_txt_join_bikereg_csv_on_bib_column Coverage Results" MODIFIED="1618068873128" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/bikeva_com_race_utils$creature_time_transforms.coverage" NAME="creature_time_transforms Coverage Results" MODIFIED="1566473660729" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/time_transforms" />
     <SUITE FILE_PATH="coverage/bikeva_com_race_utils$pre_race.coverage" NAME="pre_race Coverage Results" MODIFIED="1616258714462" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pipelines/momma_2021" />

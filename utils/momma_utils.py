@@ -44,7 +44,7 @@ def time_transform(results_path, output_filename = None):
     )
 
     for idx, row in results_df.iterrows():
-        if race_utils.is_xc(row) and \
+        if race_utils.is_xc(row, XC_CATEGORIES) and \
                 row['Bib'] != race_utils.XC_START_MARKER_BIB_NUMBER and \
                 row['Time'] is not np.nan and \
                 row['Time'] != 'DNF':

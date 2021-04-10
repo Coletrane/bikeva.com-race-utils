@@ -30,10 +30,10 @@ pre-race pickup packets.
 
 ### Post Raceday (`post_race.py`):
 
-0. `pipelines#dedup_bikereg_category_merch_column` _For some reason_, BikeReg thinks it's a great idea to
-   combine the Category Entered and Merchandise Ordered columns into one. **Do not use the "All
-   entries for a person on a single row" option when exporting from BikeReg.** We don't care about
-   merchandise in this project, so run this before any script with raw input from BikeReg.
+0. `pipelines#dedup_bikereg_category_merch_column` _For some reason_, BikeReg thinks it's a great
+   idea to combine the Category Entered and Merchandise Ordered columns into one. **Do not use the "
+   All entries for a person on a single row" option when exporting from BikeReg.** We don't care
+   about merchandise in this project, so run this before any script with raw input from BikeReg.
     * __Input:__ BikeReg registration list `.csv` file.
     * __Output:__ registration list `bikereg-deduped.csv` file with no duplicated rider names.
 1. Add walk up registrations to BikeReg for reporting and export the full registration list `.csv`
@@ -41,16 +41,19 @@ pre-race pickup packets.
 2. Manually add walk up registration bib numbers.
     * __Thank you COVID for destroying walk up registration.__ There will likely be _some_ walk ups,
       since we don't want to turn anybody down, day of, but we're not advertising them as available.
-3. `pipelines#join_bikereg_csvs` Run after the race to get walk up registrations in the registration list.
+3. `pipelines#join_bikereg_csvs` Run after the race to get walk up registrations in the registration
+   list.
     * __Input:__
         * Output `.csv` from `assign_bib_numbers.py`.
         * BikeReg registration list `.csv` that includes walk up Registrations and manually entered
     * __Output:__ `.csv` joined on First Name, Last Name, and Category.
-4. `pipelines#join_webscorer_and_bikereg`
+4. Export the webscorer results as an html file and convert the `<table>` element to csv using this
+   converter: https://www.convertcsv.com/html-table-to-csv.htm
+5. `pipelines#join_webscorer_and_bikereg`
     * __Input:__
         * Webscorer tab delimited text file with bib numbers and times
         * Output from `join_bikereg_csvs.py`
     * __Output:__ Full registration `.csv` with _raw_ times
-5. `<race-name>_utils.py#time_transform`
+6. `<race-name>_utils.py#time_transform`
     * __Input:__ Output from `webscorer_txt_join_bikereg_csv_on_bib_column.py`
     * __Output:__ `.csv` file with adjusted times
