@@ -1,14 +1,12 @@
 # Run this file AFTER entering walk up registration into BikeReg and re-exporting it
 
 from pipelines import pipelines
-from pipelines.creature_2019 import pre_race
+from utils import race_utils_common as race_utils
+from utils import momma_utils as momma
 
-BIKEREG_WITH_WALKUP_PATH = pre_race.DATA_PATH + '/in/bikereg-with-walk-up.csv'
-TOTAL_RACERS_WITH_WALKUP = 69
-
-BIB_NUMBERS_PATH = pipelines.bib_numbers_path(pre_race.BIKEREG_PATH)
-BIKEREG_JOIN_PATH = pipelines.bikereg_join_path(BIB_NUMBERS_PATH)
-WEBSCORER_BIKEREG_JOIN_PATH = pipelines.webscorer_bikereg_join_path(BIKEREG_JOIN_PATH)
+# TODO: this is a test directory
+DATA_PATH = '../../data/momma-2021-test'
+BIKEREG_PATH = DATA_PATH + '/in/bikereg.csv'
 
 
 # stuff to run always here such as class/def
@@ -18,12 +16,30 @@ def main():
 
 if __name__ == "__main__":
     # stuff only to run when not called via 'import' here
-    pipelines.dedup_bikreg_category_merch_column(
-        bikereg_results_path=BIKEREG_WITH_WALKUP_PATH,
-        total_racers=TOTAL_RACERS_WITH_WALKUP
+
+    # pipelines.dedup_bikreg_category_merch_column(
+    #     bikereg_results_path=DATA_PATH + '/in/bikereg.csv',
+    #     total_racers=52
+    # )
+
+    # pipelines.dedup_bikreg_category_merch_column(
+    #     bikereg_results_path=DATA_PATH + '/in/bikereg-with-walk-up.csv',
+    #     total_racers=80
+    # )
+
+    # pipelines.join_bikereg_csvs(
+    #     pre_reg_bib_nums_path=DATA_PATH + '/out/bikereg-deduped.csv',
+    #     walk_up_path=DATA_PATH + '/out/bikereg-with-walk-up-deduped.csv'
+    # )
+
+    pipelines.join_webscorer_and_bikereg(
+        webscorer_path=DATA_PATH + '/in/webscorer.csv',
+        bikereg_path=DATA_PATH + '/out/bikereg-deduped-all-reg.csv',
+        staggered_time_marker_bibs=[race_utils.XC_START_MARKER_BIB_NUMBER]
     )
-    pipelines.join_bikereg_csvs(
-        pre_reg_bib_nums_path=BIB_NUMBERS_PATH,
-        walk_up_path=pipelines.out_dir(BIKEREG_WITH_WALKUP_PATH) + '.csv'
-    )
+
+    # momma.time_transform(
+    #     results_path=DATA_PATH + '/out/bikereg-deduped-all-reg-with-times.csv'
+    # )
+
     main()

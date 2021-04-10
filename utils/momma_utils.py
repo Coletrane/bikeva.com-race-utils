@@ -7,59 +7,35 @@ from utils import bikereg_utils as breg_utils
 from utils import time_utils
 from utils import race_utils_common as race_utils
 
-
-MARATHON_XXC = 'Marathon/XXC'
-XC = 'XC'
-ENDURO = 'enduro'
-
-XC_DISCIPLINES = [
-    MARATHON_XXC,
-    XC
+XXC_CATEGORIES = [
+    'XXC Men',
+    'XXC Women',
+    'XXC Singlespeed',
+    'XXC Master 45+',
+    'XXC Master 55+',
 ]
 
 XC_CATEGORIES = [
-    'XC Beginner Men Cat 3',
-    'XC Beginner Women Cat 3',
-    'XC Sport Men Cat 2 19+',
-    'XC Sport Women Cat 2 19+',
-    'XC JR Varsity 7-10th Grade Cat 2/3',
-    'XC Elementary 1-6th Grade Cat 2/3',
-    'XC Varsity 11-12th Grade Cat 2/3',
-    'XC Expert Men Pro/1',
-    'XC Expert Women Pro/1',
-    'XC Master Men 35+ Cat 2/3',
-    'XC Master Men 45+ Cat 2/3',
-    'XC Master Women 35+ Cat 2/3'
+    'Expert Men (open)',
+    'Master Expert Men 35+',
+    'Expert Women (open)',
+    'Sport Men 19-34',
+    'Master Sport Men 35-44',
+    'Master Men 45 - 54',
+    'Master Men 55+',
+    'Master Sport Women 35+',
+    'Sport Women 19-34',
+    'Beginner Men (open)',
+    'Beginner Women (open)',
+    'Singlespeed',
+    'Elementary 6th Grade and younger',
+    'Junior Varsity 7-10th Grade',
+    'Varsity High School Grade 11-12 (open)',
+    'Class 1 E bike Open'
 ]
 
-DISCIPLINE_AGE_GROUPS = {
-    MARATHON_XXC: [
-        '45+',
-        '55+'
-    ],
-    XC: [
-        '19+',
-        '1-6th Grade',
-        '7-10th Grade',
-        '11-12th Grade',
-        '35+',
-        '45+',
-        '55+'
-    ],
-    ENDURO: [
-        '19-99',
-        '9-14',
-        '15-18',
-        '9-99',
-        '50-99',
-        '19-21',
-        '40-49'
-    ]
-}
 
-
-
-def time_transform(results_path):
+def time_transform(results_path, output_filename = None):
     results_df = breg_utils.read_csv_with_dtypes(results_path)
     results_df = time_utils.add_hours_digit(results_df)
 
@@ -83,7 +59,9 @@ def time_transform(results_path):
                 inplace=True
             )
 
+    if output_filename is None:
+        output_filename = pipelines.time_transform_path(results_path),
     results_df.to_csv(
-        pipelines.time_transform_path(results_path),
+        output_filename,
         index=False
     )

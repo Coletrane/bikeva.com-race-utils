@@ -3,7 +3,6 @@ import numpy as np
 
 from utils import bikereg_utils as breg_utils
 from utils import webscorer_utils as webscr_utils
-from utils import decorators as decorators
 
 
 def __data_dir(filepath, is_in_dir=True):
@@ -28,14 +27,14 @@ def out_dir(filepath):
     return __data_dir(filepath, False)
 
 
-@decorators.deprecated("Use the 'All entries for a person on a single row' in BikeReg")
 def dedup_bikreg_category_merch_column(bikereg_results_path, total_racers):
     #
     bikereg_results_df = breg_utils.read_csv_with_dtypes(bikereg_results_path)
 
     MERCH_PREFIXES = [
         'T shirt',
-        'Trail Maintenance Donations Welcomed',
+        'Trail Maintenance Donations',
+        'BROC Membership',
         'License',
         'Ultraclub Tech T'
     ]
@@ -74,7 +73,7 @@ def dedup_bikreg_category_merch_column(bikereg_results_path, total_racers):
     # this utility is for results only so we don't want to
     # preserve the files with merchandise on them
     no_merch_df.to_csv(
-        out_dir(bikereg_results_path) + '.csv',
+        out_dir(bikereg_results_path) + '-deduped.csv',
         index=False
     )
 
