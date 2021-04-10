@@ -7,6 +7,9 @@ from utils import bikereg_utils as breg_utils
 from utils import time_utils
 from utils import race_utils_common as race_utils
 
+# Since both races are running off of one clock, and the XC might not start EXACTLY at the
+# time it is scheduled, I mark the time they start with an out of bounds bib number
+XC_START_MARKER_BIB_NUMBER = 66666
 
 MARATHON_XXC = 'Marathon/XXC'
 XC = 'XC'
@@ -58,18 +61,21 @@ DISCIPLINE_AGE_GROUPS = {
 }
 
 
+def is_xc(row):
+    return row[breg_utils.CATEGORY_ENTERED] in XC_CATEGORIES
+
 
 def time_transform(results_path):
     results_df = breg_utils.read_csv_with_dtypes(results_path)
     results_df = time_utils.add_hours_digit(results_df)
 
     marker_bib_time = time_utils.row_time_to_secs(
-        results_df.loc[results_df['Bib'] == race_utils.XC_START_MARKER_BIB_NUMBER].squeeze()
+        results_df.loc[results_df['Bib'] == XC_START_MARKER_BIB_NUMBER].squeeze()
     )
 
     for idx, row in results_df.iterrows():
-        if race_utils.is_xc(row) and \
-                row['Bib'] != race_utils.XC_START_MARKER_BIB_NUMBER and \
+        if is_xc(row) and \
+                row['Bib'] != XC_START_MARKER_BIB_NUMBER and \
                 row['Time'] is not np.nan and \
                 row['Time'] != 'DNF':
             row_secs = time_utils.row_time_to_secs(row)
@@ -79,7 +85,7 @@ def time_transform(results_path):
                 )
             )
             results_df.drop(
-                results_df.loc[results_df['Bib'] == race_utils.XC_START_MARKER_BIB_NUMBER].index,
+                results_df.loc[results_df['Bib'] == XC_START_MARKER_BIB_NUMBER].index,
                 inplace=True
             )
 
