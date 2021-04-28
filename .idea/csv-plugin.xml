@@ -45,6 +45,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/momma-2021-test/momma-2021/in/REG_48930.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/momma-2021-test/out/bikereg-deduped-all-reg-with-times.csv">
           <value>
             <Attribute>
@@ -67,6 +74,13 @@
           </value>
         </entry>
         <entry key="/data/momma-2021-test/out/bikereg-deduped-with-bib-numbers-all-reg.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/momma-2021-test/out/bikereg-deduped-with-bib-numbers.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -108,7 +122,63 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/momma-2021/in/bikereg.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/momma-2021/in/webscorer.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/momma-2021/out/bikereg-deduped-with-bib-numbers-all-reg-with-times.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/momma-2021/out/bikereg-deduped-with-times.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/momma-2021/out/bikereg-deduped.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/momma-2021/out/final-results.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/pipelines/pipelines.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/utils/bikereg_utils.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/utils/momma_utils.py">
           <value>
             <Attribute>
               <option name="separator" value="," />

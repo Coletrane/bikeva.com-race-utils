@@ -10,29 +10,40 @@ DISCIPLINES = {
 }
 
 
-def read_csv_with_dtypes(filepath):
+def get_dtypes(with_merch=False):
+    dtypes = {
+        'Bib': pd.Int64Dtype(),
+        'City': str,
+        'First Name': str,
+        'USAC License Status': str,
+        'Last Name': str,
+        'State': str,
+        'Team': str,
+        'USAC License': str,
+        'Age on Event Day': str,
+        'Email': str,
+        'Phone': str,
+        'USAC Category XC': str,
+        'USAC Category DH': str,
+        'Category Date': str,
+        'Gender': str,
+        'Quantity': pd.Int64Dtype()
+    }
+    if with_merch:
+        dtypes[CAT_AND_MERCH]: str
+    else:
+        dtypes[CATEGORY_ENTERED]: str
+
+    return dtypes
+
+
+def read_csv_with_dtypes(filepath, dtypes=None):
+    if dtypes is None:
+        dtypes = get_dtypes()
     return pd.read_csv(
         filepath,
         header=0,
-        dtype={
-            'Bib': pd.Int64Dtype(),
-            'City': str,
-            'First Name': str,
-            'USAC License Status': str,
-            'Last Name': str,
-            'State': str,
-            'Team': str,
-            'USAC License': str,
-            'Age on Event Day': str,
-            'Email': str,
-            'Phone': str,
-            'Category Date': str,
-            CAT_AND_MERCH: str,
-            'Gender': str,
-            'USAC Category DH': str,
-            'USAC Category XC': str,
-            'Quantity': pd.Int64Dtype()
-        }
+        dtype=dtypes
     )
 
 

@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import pandas as pd
 
 from utils import bikereg_utils as breg_utils
 from utils import webscorer_utils as webscr_utils
@@ -29,7 +30,7 @@ def out_dir(filepath):
 
 def dedup_bikreg_category_merch_column(bikereg_results_path, total_racers):
     #
-    bikereg_results_df = breg_utils.read_csv_with_dtypes(bikereg_results_path)
+    bikereg_results_df = breg_utils.read_csv_with_dtypes(bikereg_results_path, breg_utils.get_dtypes(True))
 
     MERCH_PREFIXES = [
         'T shirt',
@@ -152,10 +153,10 @@ def join_webscorer_and_bikereg(
     bikereg_df['Time'] = np.nan
 
     # add marker bibs to bikereg dataframe
-    for marker_bib in staggered_time_marker_bibs:
+    for marker_bib_num in staggered_time_marker_bibs.values():
         bikereg_df = bikereg_df.append(
             {
-                'Bib': int(marker_bib)
+                'Bib': int(marker_bib_num)
             },
             ignore_index=True
         )
@@ -181,6 +182,14 @@ def join_webscorer_and_bikereg(
         webscorer_bikereg_join_path(bikereg_path),
         index=False
     )
+
+
+# def join_annas_list_and_bikereg(
+#         annas_list_path,
+#         bikereg_path):
+#     annas_list_df = pd.read_csv(annas_list_path,
+#                                 header=0)
+
 
 
 def time_transform_path(filepath):
