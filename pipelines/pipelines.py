@@ -117,15 +117,30 @@ def join_bikereg_csvs(pre_reg_bib_nums_path, walk_up_path):
     )
 
 
+def add_new_racers_to_existing_csv(with_bib_nums_path, racers_to_add_path, output_filepath):
+    base_df = breg_utils.read_csv_with_dtypes(with_bib_nums_path)
+    to_add_df = breg_utils.read_csv_with_dtypes(racers_to_add_path)
+
+    for idx, to_add_row in to_add_df.iterrows():
+        first_name = to_add_row['First Name']
+        last_name = to_add_row['Last Name']
+        base_row = base_df[
+            (base_df['First Name'] == first_name) &
+            (base_df['Last Name'] == last_name)]
+        # if the base spreadsheet already has the row, don't do anything
+        if not base_row.empty:
+            continue
+
+        base_df = base_df.append(to_add_row, ignore_index=True)
+
+    base_df.to_csv(output_filepath, index=False)
+
+
 def webscorer_bikereg_join_path(filepath):
     return out_dir(filepath) + '-with-times.csv'
 
 
-def join_webscorer_and_bikereg(
-        webscorer_path,
-        bikereg_path,
-        staggered_time_marker_bibs,
-        strict_matching=True):
+def join_webscorer_and_bikereg(webscorer_path, bikereg_path,staggered_time_marker_bibs, strict_matching=True):
     webscorer_df = webscr_utils.read_csv_with_dtypes(webscorer_path)
     webscorer_df.drop(
         columns=['Pl', 'Name'],
@@ -189,7 +204,6 @@ def join_webscorer_and_bikereg(
 #         bikereg_path):
 #     annas_list_df = pd.read_csv(annas_list_path,
 #                                 header=0)
-
 
 
 def time_transform_path(filepath):

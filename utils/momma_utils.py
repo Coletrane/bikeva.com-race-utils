@@ -7,6 +7,7 @@ from pipelines import pipelines
 from utils import bikereg_utils as breg_utils
 from utils import time_utils
 
+XXCG1 = 'XXCG1'
 EBIKE = 'EBIKE'
 G1 = 'G1'
 G2 = 'G2'
@@ -19,6 +20,7 @@ G7 = 'G7'
 # Since both races are running off of one clock, and the XC might not start EXACTLY at the
 # time it is scheduled, I mark the time they start with an out of bounds bib number
 MARKER_BIBS = {
+    XXCG1: 8888,
     EBIKE: 9999,
     G1: 1111,
     G2: 2222,
@@ -35,11 +37,15 @@ def get_group_marker_bibs():
 
 
 XXC_CATEGORIES = [
-    'XXC Men',
-    'XXC Women',
-    'XXC Singlespeed',
-    'XXC Master 45+',
-    'XXC Master 55+',
+    [
+        'XXC Men'
+    ],
+    [
+        'XXC Women',
+        'XXC Singlespeed',
+        'XXC Master 45+',
+        'XXC Master 55+'
+    ]
 ]
 
 GROUP_CATEGORIES = [
@@ -109,7 +115,22 @@ EBIKE_CATEGORY = 'Class 1 E-Bike (open)'
 
 
 def is_xxc(row):
-    return row['Category Entered'] in XXC_CATEGORIES
+    return get_stagger_bib_xxc_group_number_string(row) is not None
+
+
+def get_xxc_stagger_bib_number(row):
+    stagger_bib_group = get_stagger_bib_xxc_group_number_string(row)
+    return MARKER_BIBS[stagger_bib_group]
+
+
+def get_stagger_bib_xxc_group_number_string(row):
+    for idx in range(len(XXC_CATEGORIES)):
+        category = row['Category Entered']
+        xxc_category_list = XXC_CATEGORIES[idx]
+        if category not in xxc_category_list or idx is 0:
+            continue
+
+        return f"XXCG{idx}"
 
 
 def is_ebike(row):
@@ -137,7 +158,7 @@ def get_group_stagger_bib_number(row):
 
 def get_stagger_bib_num(row):
     if is_xxc(row):
-        return
+        return get_xxc_stagger_bib_number(row)
 
     if is_ebike(row):
         return MARKER_BIBS[EBIKE]
@@ -158,7 +179,7 @@ def validate_categories(bikereg_path):
             assert is_xxc(row) or is_ebike(row) or is_group_category(row)
         except AssertionError as ass_err:
             category = row['Category Entered']
-            ass_err.args += ('Category ', category,' not found!')
+            ass_err.args += ('Category ', category, ' not found!')
             raise
 
 
@@ -169,7 +190,7 @@ def time_transform(results_path, output_filename=None):
     for idx, row in results_df.iterrows():
         # only transform the time for youth and xc times, throw out nan or 'DNF' times, don't do anything to the
         # marker bib numbers
-        if is_xxc(row) or \
+        if row['Category Entered'] is 'XXC Men' or \
                 row['Time'] is np.nan or \
                 row['Time'] == 'DNF' or \
                 row['Bib'] in MARKER_BIBS.items():

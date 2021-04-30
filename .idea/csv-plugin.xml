@@ -38,6 +38,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/momma-2021-test/in/xxc-numbers.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/momma-2021-test/mmm-2021.csv">
           <value>
             <Attribute>
@@ -60,6 +67,20 @@
           </value>
         </entry>
         <entry key="/data/momma-2021-test/out/bikereg-deduped-all-reg.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/momma-2021-test/out/bikereg-deduped-joined-joined-all.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/momma-2021-test/out/bikereg-deduped-joined.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -129,6 +150,34 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/momma-2021/in/bikreg-current.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/momma-2021/in/old/non-xxc-numbers.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/momma-2021/in/old/xxc-numbers.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/momma-2021/in/test/webscorer.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/momma-2021/in/webscorer.csv">
           <value>
             <Attribute>
@@ -136,7 +185,28 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/momma-2021/out/bikereg-deduped-small.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/momma-2021/out/bikereg-deduped-with-bib-numbers-all-reg-with-times.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/momma-2021/out/bikereg-deduped-with-bib-numbers-all-reg.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/momma-2021/out/bikereg-deduped-with-bib-numbers.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
